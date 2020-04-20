@@ -47,7 +47,7 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.delete('/:id', async (req, res) => {
+app.delete('/:id([1-9]\\d{0,})', async (req, res) => {
   const client = new Client({
     host: 'localhost',
     user: 'mgalush',
