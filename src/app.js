@@ -36,10 +36,9 @@ app.post('/', async (req, res) => {
     database: 'todoApp',
   });
   try {
-    console.log(req.body);
     await client.connect();
     const resFromDB = await client.query(
-      `INSERT INTO public.todos (name) VALUES ('${req.body.name}') returning *`
+      `INSERT INTO public.todos (name) VALUES ($1::text) returning *`, [req.body.name]
     );
     res.send(resFromDB.rows[0]);
     await client.end();
@@ -57,7 +56,7 @@ app.delete('/:id', async (req, res) => {
   try {
     await client.connect();
     const resFromDB = await client.query(
-      'DELETE FROM public.todos WHERE id=' + req.params.id
+      'DELETE FROM public.todos WHERE id=$1', [req.params.id]
     );
     res.send(resFromDB.rows);
     await client.end();
